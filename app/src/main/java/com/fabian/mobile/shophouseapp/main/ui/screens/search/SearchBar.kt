@@ -109,7 +109,7 @@ fun SearchBar(
 @Composable
 private fun preview()
 {
-    Column(modifier = Modifier.fillMaxSize().background(Color.Red)) {
+    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         SearchBar(
             modifier = Modifier.fillMaxWidth(),
             searchText = "",
