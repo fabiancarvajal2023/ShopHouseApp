@@ -8,14 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.fabian.mobile.shophouseapp.categoria.ui.CategoriaScreen
+import androidx.navigation.compose.rememberNavController
 import com.fabian.mobile.shophouseapp.categoria.ui.CategoriaViewModel
 import com.fabian.mobile.shophouseapp.main.ui.screens.MainScreen
+import com.fabian.mobile.shophouseapp.navegacion.TiendaAppScreens
+import com.fabian.mobile.shophouseapp.navegacion.TiendaNavigation
+import com.fabian.mobile.shophouseapp.producto.ui.ProductoViewModel
 import com.fabian.mobile.shophouseapp.ui.theme.ShopHouseAppTheme
 
 class MainActivity : ComponentActivity() {
 
     private val categoriaViewModel: CategoriaViewModel by viewModels()
+    private val productoViewModel: ProductoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +31,15 @@ class MainActivity : ComponentActivity() {
                 ) {
                     MainScreen() {
 
-                        CategoriaScreen(categoriaViewModel = categoriaViewModel)
+                        val navController = rememberNavController()
+                        TiendaNavigation(
+                            navController =navController,
+                            categoriaViewModel = categoriaViewModel,
+                            productoViewModel = productoViewModel,
+                            onClickCategoria ={catId, nombre->
+                                navController.navigate(TiendaAppScreens.ProductoScreen.createRoute(catId = catId.toString(), nombre = nombre))
+                            }
+                        )
                     }
                 }
             }
