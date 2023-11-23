@@ -1,12 +1,10 @@
 package com.fabian.mobile.shophouseapp.producto.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,9 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -46,13 +42,14 @@ import com.fabian.mobile.shophouseapp.ui.theme.ShopHouseAppTheme
 @Composable
 fun ProductoScreen(
     productoViewModel: ProductoViewModel,
+    setHeaderParams: (title: String, color: String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
     categoriaId: Int?,
     categoriaNombre: String
 ) {
-
     val productos by productoViewModel.productos.collectAsState()
     Screen(productos = productos, categoriaNombre = categoriaNombre)
     LaunchedEffect(key1 = 1) {
+        setHeaderParams(categoriaNombre, "Black", true, true, true, true)
         productoViewModel.cargarProductos(catId = categoriaId)
     }
 }
@@ -60,28 +57,21 @@ fun ProductoScreen(
 @Composable
 private fun Screen(productos: List<Producto>, categoriaNombre: String) {
     Column(modifier = Modifier.fillMaxSize()) {
-        Text(
-            modifier = Modifier.padding(start = 10.dp, top = 10.dp),
-            text = categoriaNombre,
-            fontSize = 24.sp,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        Spacer(modifier = Modifier.height(5.dp))
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 10.dp, end = 10.dp, bottom = 10.dp),
+                .padding(top = 10.dp, start = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalArrangement = Arrangement.spacedBy(space = 30.dp),
             contentPadding = PaddingValues(all = 0.dp)
         ) {
             productos.forEach { producto ->
                 item {
-                    Box(modifier = Modifier
-                        .fillMaxWidth(1f)
-                        .height(200.dp)
-                        .clip(shape = RoundedCornerShape(10))) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .height(200.dp)
+                            .clip(shape = RoundedCornerShape(10))
+                    ) {
 
                         AsyncImage(
                             model = "${NetworkConstants.URL}producto/imagen/${producto.imagen}",
@@ -105,11 +95,11 @@ private fun Screen(productos: List<Producto>, categoriaNombre: String) {
                                     .fillMaxSize()
                             ) {
                                 Text(
-                                    modifier= Modifier
+                                    modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(start = 15.dp, end = 15.dp, top = 10.dp),
                                     text = producto.nombre,
-                                    fontSize = 32.sp,
+                                    fontSize = 36.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White,
                                     textAlign = TextAlign.Center,
@@ -117,23 +107,28 @@ private fun Screen(productos: List<Producto>, categoriaNombre: String) {
                                 )
 
                                 Text(
-                                    modifier= Modifier
+                                    modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(top = 20.dp, start = 15.dp, end = 15.dp),
                                     text = "Precio: $${producto.precioVenta}",
-                                    fontSize = 24.sp,
+                                    fontSize = 29.sp,
                                     color = Color.White,
                                 )
 
-                                Box(modifier = Modifier.fillMaxSize()){
-                                    Button(modifier = Modifier
-                                        .clip(shape = RoundedCornerShape(50)).align(BottomCenter).padding(bottom = 10.dp), onClick = { /*TODO*/ }, colors = ButtonDefaults.buttonColors(
-                                        containerColor = Orange
-                                    )) {
-                                        Text(text = "Añadir a la canasta", fontSize = 20.sp)
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    Button(
+                                        modifier = Modifier
+                                            .clip(shape = RoundedCornerShape(50))
+                                            .align(BottomCenter)
+                                            .padding(bottom = 10.dp),
+                                        onClick = { /*TODO*/ },
+                                        colors = ButtonDefaults.buttonColors(
+                                            containerColor = Orange
+                                        )
+                                    ) {
+                                        Text(text = "Añadir a la canasta", fontSize = 26.sp)
                                     }
                                 }
-
 
 
                             }

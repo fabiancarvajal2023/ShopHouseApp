@@ -41,7 +41,7 @@ fun SearchBar(
         modifier = modifier.clip(RoundedCornerShape(percent = 50)),
         value = searchText,
         onValueChange = onValueChange,
-        textStyle = TextStyle(fontSize = 12.sp),
+        textStyle = TextStyle(fontSize = 18.sp),
         singleLine = true,
         maxLines = 1,
         leadingIcon = {
@@ -86,9 +86,9 @@ fun SearchBar(
         },
         placeholder = {
             Text(
-                text = "Buscar en shophouse",
+                text = "Buscar",
                 color = Color.Gray,
-                fontSize = 12.sp
+                fontSize = 18.sp
             )
         },
         colors = TextFieldDefaults.textFieldColors(
