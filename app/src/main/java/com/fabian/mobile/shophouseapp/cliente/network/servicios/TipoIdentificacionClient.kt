@@ -1,6 +1,5 @@
 package com.fabian.mobile.shophouseapp.cliente.network.servicios
 
-import com.fabian.mobile.shophouseapp.categoria.network.model.CategoriaResponse
 import com.fabian.mobile.shophouseapp.cliente.network.model.TipoIdentificacionResponse
 import com.fabian.mobile.shophouseapp.network.RetrofitClient
 import retrofit2.http.GET

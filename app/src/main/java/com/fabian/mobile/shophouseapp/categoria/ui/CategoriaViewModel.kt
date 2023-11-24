@@ -22,6 +22,8 @@ class CategoriaViewModel(
     )
 ) : ViewModel() {
 
+    private val _search = MutableStateFlow("")
+    val search: StateFlow<String> = _search.asStateFlow()
 
     private val _categorias = MutableStateFlow(emptyList<Categoria>())
     val categorias: StateFlow<List<Categoria>> = _categorias.asStateFlow()
@@ -32,12 +34,21 @@ class CategoriaViewModel(
 
     fun cargarCategorias() {
         viewModelScope.launch {
-            categoriaRepositorio.getCategorias()
-                .onSuccess {
-                    _categorias.value = it
-                }.onFailure {
-                    println()
-                }
+            if(_search.value.isNotEmpty() && _search.value.length >=3){
+                categoriaRepositorio.getCategoriasPorNombre(_search.value)
+                    .onSuccess {
+                        _categorias.value = it
+                    }.onFailure {
+                        println()
+                    }
+            }else {
+                categoriaRepositorio.getCategorias()
+                    .onSuccess {
+                        _categorias.value = it
+                    }.onFailure {
+                        println()
+                    }
+            }
         }
     }
 
@@ -50,5 +61,10 @@ class CategoriaViewModel(
                     println()
                 }
         }
+    }
+
+    fun changeSearch(value: String) {
+        _search.value = value
+        cargarCategorias()
     }
 }

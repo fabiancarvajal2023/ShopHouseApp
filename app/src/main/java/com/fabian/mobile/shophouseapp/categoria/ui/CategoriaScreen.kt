@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fabian.mobile.shophouseapp.R
+import com.fabian.mobile.shophouseapp.ScreensEnum
 import com.fabian.mobile.shophouseapp.categoria.Categoria
 import com.fabian.mobile.shophouseapp.categoria.Promocion
 import com.fabian.mobile.shophouseapp.network.NetworkConstants
@@ -61,17 +62,38 @@ import kotlinx.coroutines.delay
 @Composable
 fun CategoriaScreen(
     categoriaViewModel: CategoriaViewModel,
-    setHeaderParams: (title: String,color:String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
+    setHeaderParams: (screen: ScreensEnum, title: String, color: String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
     onClickCategoria: (Int, String) -> Unit
 ) {
 
     val context = LocalContext.current
+    LaunchedEffect(key1 = 1) {
+        setHeaderParams(
+            ScreensEnum.Home,
+            context.getString(R.string.app_name),
+            "Black",
+            false,
+            true,
+            true,
+            true
+        )
+    }
     val categorias by categoriaViewModel.categorias.collectAsState()
     val promociones by categoriaViewModel.promociones.collectAsState()
-    Screen(categorias = categorias, promociones = promociones, onClickCategoria = onClickCategoria)
+    Screen(categorias = categorias, promociones = promociones, onClickCategoria = {
+        onClickCategoria(categorias[it].id, categorias[it].nombre)
+    })
 
     LaunchedEffect(key1 = 1) {
-        setHeaderParams(context.getString(R.string.app_name), "Black",false, true, true, true)
+        setHeaderParams(
+            ScreensEnum.Home,
+            context.getString(R.string.app_name),
+            "Black",
+            false,
+            true,
+            true,
+            true
+        )
         categoriaViewModel.cargarCategorias()
         categoriaViewModel.cargarPromociones()
     }
@@ -82,7 +104,7 @@ fun CategoriaScreen(
 private fun Screen(
     categorias: List<Categoria>,
     promociones: List<Promocion>,
-    onClickCategoria: (Int, String) -> Unit
+    onClickCategoria: (Int) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         var mostrarOfertas by rememberSaveable { mutableStateOf(true) }
@@ -202,13 +224,13 @@ private fun Screen(
             verticalArrangement = Arrangement.spacedBy(space = 10.dp),
             contentPadding = PaddingValues(all = 0.dp)
         ) {
-            categorias.forEach() { categoria ->
+            categorias.forEachIndexed() { index, categoria ->
                 item {
                     Box(
                         modifier = Modifier
                             .pointerInput(key1 = Unit) {
                                 detectTapGestures(onTap = {
-                                    onClickCategoria(categoria.id, categoria.nombre)
+                                    onClickCategoria(index)
                                 }, onPress = {
                                     if (mostrarOfertas) {
                                         mostrarOfertas = false
@@ -264,8 +286,10 @@ private fun Screen(
         LaunchedEffect(key1 = Unit) {
             while (true) {
                 delay(3000)
-                val siguientePagina = (pagerState.currentPage + 1) % pagerState.pageCount
-                pagerState.scrollToPage(page = siguientePagina)
+                if (pagerState.pageCount > 0) {
+                    val siguientePagina = (pagerState.currentPage + 1) % pagerState.pageCount
+                    pagerState.scrollToPage(page = siguientePagina)
+                }
             }
         }
     }
@@ -285,7 +309,7 @@ private fun Preview() {
             Screen(
                 categorias = categorias,
                 promociones = promociones,
-                onClickCategoria = { _, _ ->
+                onClickCategoria = { _ ->
 
                 }
             )

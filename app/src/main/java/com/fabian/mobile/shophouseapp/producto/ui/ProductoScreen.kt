@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fabian.mobile.shophouseapp.R
+import com.fabian.mobile.shophouseapp.ScreensEnum
 import com.fabian.mobile.shophouseapp.network.NetworkConstants
 import com.fabian.mobile.shophouseapp.producto.Producto
 import com.fabian.mobile.shophouseapp.ui.theme.DarkTransparent
@@ -42,15 +43,25 @@ import com.fabian.mobile.shophouseapp.ui.theme.ShopHouseAppTheme
 @Composable
 fun ProductoScreen(
     productoViewModel: ProductoViewModel,
-    setHeaderParams: (title: String, color: String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
+    setHeaderParams: (screen: ScreensEnum, title: String, color: String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
     categoriaId: Int?,
     categoriaNombre: String
 ) {
+    LaunchedEffect(key1 = 1)
+    {
+        setHeaderParams(ScreensEnum.Productos,
+            categoriaNombre,
+            "Black",
+            true,
+            true,
+            true,
+            true)
+        productoViewModel.setCategoriaId(catId = categoriaId)
+    }
     val productos by productoViewModel.productos.collectAsState()
     Screen(productos = productos, categoriaNombre = categoriaNombre)
     LaunchedEffect(key1 = 1) {
-        setHeaderParams(categoriaNombre, "Black", true, true, true, true)
-        productoViewModel.cargarProductos(catId = categoriaId)
+        productoViewModel.cargarProductos()
     }
 }
 

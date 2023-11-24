@@ -1,24 +1,32 @@
 package com.fabian.mobile.shophouseapp.navegacion
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.fabian.mobile.shophouseapp.ScreensEnum
 import com.fabian.mobile.shophouseapp.categoria.ui.CategoriaScreen
 import com.fabian.mobile.shophouseapp.categoria.ui.CategoriaViewModel
 import com.fabian.mobile.shophouseapp.cliente.ui.IniciarSesionScreen
+import com.fabian.mobile.shophouseapp.cliente.ui.IniciarSesionViewModel
+import com.fabian.mobile.shophouseapp.cliente.ui.RegistrarseScreen
+import com.fabian.mobile.shophouseapp.cliente.ui.RegistrarseViewModel
 import com.fabian.mobile.shophouseapp.producto.ui.ProductoScreen
 import com.fabian.mobile.shophouseapp.producto.ui.ProductoViewModel
 
 @Composable
 fun TiendaNavigation(
     navController: NavHostController,
-    setHeaderParams: (title: String, color: String, mostrarBotonAtras:Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
+    setHeaderParams: (screen:ScreensEnum,title: String, color: String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
     categoriaViewModel: CategoriaViewModel,
     productoViewModel: ProductoViewModel,
-    onClickCategoria: (Int, String) -> Unit
+    registrarseViewModel: RegistrarseViewModel,
+    iniciarSesionViewModel: IniciarSesionViewModel,
+    onClickCategoria: (Int, String) -> Unit,
+    onClickRegistrarse: () -> Unit,
+    onBack: () -> Unit,
+    loginSuccess: () -> Unit
 ) {
 
 
@@ -60,7 +68,21 @@ fun TiendaNavigation(
         }
         composable(route = TiendaAppScreens.IniciarSesionScreen.route)
         {
-            IniciarSesionScreen(setHeaderParams = setHeaderParams)
+            IniciarSesionScreen(
+                iniciarSesionViewModel = iniciarSesionViewModel,
+                setHeaderParams = setHeaderParams,
+                onClickRegistrarse = onClickRegistrarse,
+                onback = onBack,
+                loginSuccess = loginSuccess
+            )
+        }
+
+        composable(route = TiendaAppScreens.RegistrarseScreen.route)
+        {
+            RegistrarseScreen(
+                registrarseViewModel = registrarseViewModel,
+                setHeaderParams = setHeaderParams
+            )
         }
     }
 }

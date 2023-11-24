@@ -12,12 +12,15 @@ import androidx.compose.ui.unit.sp
 import com.fabian.mobile.shophouseapp.ui.theme.Orange
 
 @Composable
-fun ButtonGeneral(modifier: Modifier,value: String, onCLick: () -> Unit) {
+fun ButtonGeneral(modifier: Modifier, value: String, enabled: Boolean = true, onCLick: () -> Unit) {
     Button(
         modifier = modifier.clip(shape = RoundedCornerShape(50)),
+        enabled = enabled,
         colors = ButtonDefaults.buttonColors(
             containerColor = Orange,
-            contentColor = Color.White
+            contentColor = Color.White,
+            disabledContainerColor = Color.Gray,
+            disabledContentColor = Color.White,
         ), onClick = onCLick
     ) {
         Text(text = value, fontSize = 18.sp)

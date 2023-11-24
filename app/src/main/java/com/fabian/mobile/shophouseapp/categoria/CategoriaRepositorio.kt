@@ -17,6 +17,18 @@ class CategoriaRepositorio(private val api: CategoriaClient) {
         }
     }
 
+    suspend fun getCategoriasPorNombre(nombre: String): Result<List<Categoria>> {
+        return try {
+            val response = api.getCategoriaPorNombre(nombre = nombre)
+            val result = response.map {
+                map(categoriaResponse = it)
+            }
+            Result.success(result)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     fun map(categoriaResponse: CategoriaResponse): Categoria {
         return Categoria(
             id = categoriaResponse.id,

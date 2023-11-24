@@ -16,19 +16,35 @@ class ProductoViewModel(
     ),
 ) : ViewModel() {
 
+    private val _search = MutableStateFlow("")
+    val search: StateFlow<String> = _search.asStateFlow()
+
     private val _productos = MutableStateFlow(emptyList<Producto>())
     val productos: StateFlow<List<Producto>> = _productos.asStateFlow()
 
+    private var categoriaId: Int? = null
 
-    fun cargarProductos(catId: Int?) {
+    fun cargarProductos() {
         viewModelScope.launch {
-            if (catId != null) {
-                productoRepositorio.getProductosBuscarPorCategoria(categoriaId = catId)
-                    .onSuccess {
-                        _productos.value = it
-                    }.onFailure {
-                        println()
-                    }
+            if (categoriaId != null) {
+                if (_search.value.isNotEmpty() && _search.value.length >= 3) {
+                    productoRepositorio.getProductosBuscarPorCategoriaYNombre(
+                        categoriaId = categoriaId!!,
+                        nombre = _search.value
+                    )
+                        .onSuccess {
+                            _productos.value = it
+                        }.onFailure {
+                            println()
+                        }
+                } else {
+                    productoRepositorio.getProductosBuscarPorCategoria(categoriaId = categoriaId!!)
+                        .onSuccess {
+                            _productos.value = it
+                        }.onFailure {
+                            println()
+                        }
+                }
             } else {
                 productoRepositorio.getProductos()
                     .onSuccess {
@@ -38,6 +54,15 @@ class ProductoViewModel(
                     }
             }
         }
+    }
+
+    fun changeSearch(value: String) {
+        _search.value = value
+        cargarProductos()
+    }
+
+    fun setCategoriaId(catId: Int?) {
+        categoriaId = catId
     }
 
 }

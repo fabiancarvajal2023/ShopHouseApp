@@ -6,6 +6,7 @@ sealed class TiendaAppScreens(val route: String) {
     object ProductoScreen : TiendaAppScreens("ProductoScreen/{catId}/{nombre}") {
         fun createRoute(catId: String? = "", nombre: String? = "") = "ProductoScreen/$catId/$nombre"
     }
-
     object IniciarSesionScreen : TiendaAppScreens(route = "IniciarSesionScreen")
+
+    object RegistrarseScreen:TiendaAppScreens(route = "RegistrarseScreen")
 }

@@ -1,4 +1,4 @@
-package com.fabian.mobile
+package com.fabian.mobile.shophouseapp
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -6,6 +6,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class MainViewModel() : ViewModel() {
+
+    private val _currentScreen = MutableStateFlow(ScreensEnum.Splash)
+    val currentScreen: StateFlow<ScreensEnum> = _currentScreen.asStateFlow()
+
     private val _title = MutableStateFlow("")
     val title: StateFlow<String> = _title.asStateFlow()
 
@@ -24,9 +28,6 @@ class MainViewModel() : ViewModel() {
     private val _mostrarRegistrarUsuario = MutableStateFlow(false)
     val mostrarRegistrarUsuario: StateFlow<Boolean> = _mostrarRegistrarUsuario.asStateFlow()
 
-    private val _isLogin = MutableStateFlow(false)
-    val isLogin: StateFlow<Boolean> = _isLogin.asStateFlow()
-
     fun setTitle(title: String) {
         _title.value = title
     }
@@ -39,15 +40,19 @@ class MainViewModel() : ViewModel() {
         _mostrarCajaBusqueda.value = value
     }
 
-    fun setMostrarCarroCompras(value:Boolean){
+    fun setMostrarCarroCompras(value: Boolean) {
         _mostrarCarroCompras.value = value
     }
 
-    fun setMostrarRegistrarUsuario(value:Boolean){
+    fun setMostrarRegistrarUsuario(value: Boolean) {
         _mostrarRegistrarUsuario.value = value
     }
 
-    fun setIsLogin(value:Boolean){
-        _isLogin.value = value
+    fun changeUserName(value: String) {
+        _userName.value = value
+    }
+
+    fun changeScreen(value: ScreensEnum) {
+        _currentScreen.value = value
     }
 }

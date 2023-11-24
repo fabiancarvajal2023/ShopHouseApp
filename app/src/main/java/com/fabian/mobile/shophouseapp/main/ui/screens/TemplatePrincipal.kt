@@ -55,12 +55,13 @@ import com.fabian.mobile.shophouseapp.ui.theme.ShopHouseAppTheme
 fun TemplatePrincipal(
     title: String,
     userName: String,
+    searchText:String,
     mostrarBotonAtras: Boolean,
     mostrarCajaBusqueda: Boolean,
     mostrarCarroCompras: Boolean,
     mostrarRegistrarUsuario: Boolean,
-    isLogin: Boolean,
     color:Color = Color.Black,
+    onValueChange:(String)->Unit,
     atras: () -> Unit,
     iniciarSesion: () -> Unit,
     cerrarSesion: () -> Unit,
@@ -75,9 +76,9 @@ fun TemplatePrincipal(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(40.dp),
-                        searchText = "",
+                        searchText = searchText,
                         isEmpty = false,
-                        onValueChange = {},
+                        onValueChange = onValueChange,
                         onEmptyOnClick = { /*TODO*/ }) {
 
                     }
@@ -122,7 +123,7 @@ fun TemplatePrincipal(
                         expanded = openMenu,
                         onDismissRequest = { openMenu = false }) {
 
-                        if (isLogin) {
+                        if (userName.isNotEmpty()) {
                             DropdownMenuItem(onClick = {
                                 openMenu = false
                             }, text = {
@@ -208,14 +209,15 @@ fun Previsualizacion() {
             TemplatePrincipal(
                 title = "",
                 userName = "wilson",
+                searchText = "",
                 mostrarBotonAtras = false,
                 mostrarCajaBusqueda = true,
                 mostrarCarroCompras = true,
                 mostrarRegistrarUsuario = true,
-                isLogin = false,
                 iniciarSesion = {},
                 cerrarSesion = {},
-                atras = {}
+                atras = {},
+                onValueChange = {}
             ) {
 
             }
