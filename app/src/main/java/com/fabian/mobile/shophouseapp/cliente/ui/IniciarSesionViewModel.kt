@@ -25,6 +25,9 @@ class IniciarSesionViewModel(
     private val _nombre = MutableStateFlow("")
     val nombre: StateFlow<String> = _nombre.asStateFlow()
 
+    private val _id = MutableStateFlow(-1L)
+    val id: StateFlow<Long> = _id.asStateFlow()
+
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password.asStateFlow()
 
@@ -72,11 +75,11 @@ class IniciarSesionViewModel(
             )
                 .onSuccess {
                     _isLoading.value = false
-                    if(it.nombre.isNotEmpty()) {
+                    if (it.nombre.isNotEmpty()) {
                         resetValues()
+                        _id.value = it.id
                         _nombre.value = it.nombre
-                    }
-                    else{
+                    } else {
                         _showErrorDialog.value = true
                     }
                 }.onFailure {
@@ -92,9 +95,12 @@ class IniciarSesionViewModel(
         _enabledButton.value = false
     }
 
-    fun resetNombre()
-    {
+    fun resetNombre() {
         _nombre.value = ""
+    }
+
+    fun resetId() {
+        _id.value = -1L
     }
 
     fun dismissErrorDialog() {

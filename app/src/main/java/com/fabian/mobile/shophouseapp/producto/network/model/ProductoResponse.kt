@@ -12,5 +12,5 @@ data class ProductoResponse(
     @SerializedName("nombre") val nombre: String,
     @SerializedName("codigoBarras") val codigoBarras: String,
     @SerializedName("precioVenta") val precioVenta: Int,
-    @SerializedName("precioCompra") val precioCompra: String,
+    @SerializedName("precioCompra") val precioCompra: Int,
 )

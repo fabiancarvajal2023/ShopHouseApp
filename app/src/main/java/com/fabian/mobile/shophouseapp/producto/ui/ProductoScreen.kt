@@ -45,28 +45,31 @@ fun ProductoScreen(
     productoViewModel: ProductoViewModel,
     setHeaderParams: (screen: ScreensEnum, title: String, color: String, mostrarBotonAtras: Boolean, mostrarCajaBusqueda: Boolean, mostrarCarroCompras: Boolean, mostrarRegistrarUsuario: Boolean) -> Unit,
     categoriaId: Int?,
-    categoriaNombre: String
+    categoriaNombre: String,
+    addOnclick: (Producto) -> Unit
 ) {
     LaunchedEffect(key1 = 1)
     {
-        setHeaderParams(ScreensEnum.Productos,
+        setHeaderParams(
+            ScreensEnum.Productos,
             categoriaNombre,
             "Black",
             true,
             true,
             true,
-            true)
+            true
+        )
         productoViewModel.setCategoriaId(catId = categoriaId)
     }
     val productos by productoViewModel.productos.collectAsState()
-    Screen(productos = productos, categoriaNombre = categoriaNombre)
+    Screen(productos = productos, addOnclick = addOnclick)
     LaunchedEffect(key1 = 1) {
         productoViewModel.cargarProductos()
     }
 }
 
 @Composable
-private fun Screen(productos: List<Producto>, categoriaNombre: String) {
+private fun Screen(productos: List<Producto>, addOnclick: (Producto) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
@@ -132,7 +135,7 @@ private fun Screen(productos: List<Producto>, categoriaNombre: String) {
                                             .clip(shape = RoundedCornerShape(50))
                                             .align(BottomCenter)
                                             .padding(bottom = 10.dp),
-                                        onClick = { /*TODO*/ },
+                                        onClick = { addOnclick(producto) },
                                         colors = ButtonDefaults.buttonColors(
                                             containerColor = Orange
                                         )
@@ -162,7 +165,7 @@ private fun Preview() {
             color = MaterialTheme.colorScheme.background
         ) {
             val productos = emptyList<Producto>()
-            Screen(categoriaNombre = "", productos = productos)
+            Screen(productos = productos, addOnclick = {})
         }
     }
 }

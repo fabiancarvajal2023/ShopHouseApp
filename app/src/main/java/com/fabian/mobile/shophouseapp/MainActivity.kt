@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.rememberNavController
+import com.fabian.mobile.shophouseapp.carro.ui.CarritoViewModel
 import com.fabian.mobile.shophouseapp.categoria.ui.CategoriaViewModel
 import com.fabian.mobile.shophouseapp.cliente.constants.ClienteConstants
 import com.fabian.mobile.shophouseapp.cliente.ui.IniciarSesionViewModel
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
     private val registrarseViewModel: RegistrarseViewModel by viewModels()
     private val mainViewModel: MainViewModel by viewModels()
     private val iniciarSesionViewModel: IniciarSesionViewModel by viewModels()
+    private val carritoViewModel: CarritoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,6 +135,9 @@ class MainActivity : ComponentActivity() {
                                 }
                             }
                         },
+                        carritoOnclick = {
+                            navController.navigate(TiendaAppScreens.CarritoScreen.route)
+                        },
                         atras = atras
                     ) {
                         TiendaNavigation(
@@ -142,6 +147,7 @@ class MainActivity : ComponentActivity() {
                             productoViewModel = productoViewModel,
                             registrarseViewModel = registrarseViewModel,
                             iniciarSesionViewModel = iniciarSesionViewModel,
+                            carritoViewModel = carritoViewModel,
                             onClickCategoria = { catId, nombre ->
                                 navController.navigate(
                                     TiendaAppScreens.ProductoScreen.createRoute(
@@ -164,6 +170,12 @@ class MainActivity : ComponentActivity() {
                                     }
                                 }
 
+                            },
+                            addOnclick = {
+                                carritoViewModel.addProducto(producto = it)
+                            },
+                            onLogin = {
+                                navController.navigate(TiendaAppScreens.IniciarSesionScreen.route)
                             }
                         )
                     }

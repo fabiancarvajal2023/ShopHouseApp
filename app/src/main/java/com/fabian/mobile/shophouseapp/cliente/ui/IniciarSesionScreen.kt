@@ -104,6 +104,14 @@ fun IniciarSesionScreen(
             onback()
         }
     }
+    val id by iniciarSesionViewModel.id.collectAsState()
+    LaunchedEffect(key1 = id) {
+        if (id != -1L) {
+            val preference = Preferences(context = context)
+            preference.saveLong(ClienteConstants.ID, id)
+            iniciarSesionViewModel.resetId()
+        }
+    }
 }
 
 @Composable

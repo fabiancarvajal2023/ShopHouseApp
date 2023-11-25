@@ -9,4 +9,6 @@ sealed class TiendaAppScreens(val route: String) {
     object IniciarSesionScreen : TiendaAppScreens(route = "IniciarSesionScreen")
 
     object RegistrarseScreen:TiendaAppScreens(route = "RegistrarseScreen")
+
+    object CarritoScreen:TiendaAppScreens(route = "CarritoScreen")
 }

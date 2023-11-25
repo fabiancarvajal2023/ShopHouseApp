@@ -65,6 +65,7 @@ fun TemplatePrincipal(
     atras: () -> Unit,
     iniciarSesion: () -> Unit,
     cerrarSesion: () -> Unit,
+    carritoOnclick:()->Unit,
     content: @Composable BoxScope.() -> Unit
 ) {
     Scaffold(topBar = {
@@ -97,7 +98,7 @@ fun TemplatePrincipal(
                         modifier = Modifier
                             .clip(shape = RoundedCornerShape(percent = 50))
                             .size(40.dp)
-                            .background(Color.White), onClick = {}) {
+                            .background(Color.White), onClick = carritoOnclick) {
                         Icon(
                             imageVector = Icons.Filled.ShoppingCart,
                             contentDescription = null
@@ -217,6 +218,7 @@ fun Previsualizacion() {
                 iniciarSesion = {},
                 cerrarSesion = {},
                 atras = {},
+                carritoOnclick = {},
                 onValueChange = {}
             ) {
 

@@ -11,5 +11,5 @@ data class Producto(
     val nombre: String,
     val codigoBarras: String,
     val precioVenta: Int,
-    val precioCompra: String,
+    val precioCompra: Int,
 )
